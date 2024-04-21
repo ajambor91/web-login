@@ -1,18 +1,30 @@
 from functions.rest_api import controller, get, post
-from repos.UserRepo import UserRepo
+from guard.UserAuthService import UserAuthService
+from guard.RouteGuard import RouteGuard
 from entities.User import User
-@controller('/user')
+@controller('/user', guard=RouteGuard())
 class UserController:
 
     def __init__(self):
 
-        self.repo = UserRepo()
+        self.auth_service = UserAuthService()
 
     @post('/insert')
-    def test(self):
-        self.repo = UserRepo()
-        # self.repo.insert_user(User(login='test', data='data'))
+    def insert(self):
+        self.auth_service = UserAuthService()
+        user = self.auth_service.register(login='test', password='data')
+
         return {
-                'message': 'insert',
+                'message': 'czesc ' + user.login,
+                'method': 'POST',
+            }
+
+    @post('/login')
+    def test(self):
+        self.auth_service = UserAuthService()
+        user = self.auth_service.login(login='test', password='data', session_id='sjdhakujfgejhfg')
+
+        return {
+                'message': 'czesc ' + user.login,
                 'method': 'POST',
             }

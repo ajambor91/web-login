@@ -1,5 +1,4 @@
 from entities.Page import Page
-import sqlite3
 from db.DataBase import DataBase
 from functions.db import entity
 class PageRepo:
@@ -15,10 +14,7 @@ class PageRepo:
 
     @entity
     def get_pages(self):
-        print('OPOPOPOPOPOPOP')
         cursor = self.conn.db_connect()
         cursor.execute('''SELECT link, data FROM pages''')
         result = cursor.fetchall()
-        print(result)
-        print('oooooo')
         return result
